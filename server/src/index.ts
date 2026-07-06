@@ -5,10 +5,11 @@ const wss = new WebSocketServer({ port: 8080 });
 wss.on("connection", function (socket) {
   console.log("Client connected!");
 
-  socket.send("Hello!");
-
   socket.on("message", function (data) {
-    console.log(data.toString());
+    const msg = JSON.parse(data.toString());
+    if (msg.content === "Hi") {
+      socket.send(JSON.stringify({content: "Hello!", sender: "Server"}))
+    }
   });
 });
 
